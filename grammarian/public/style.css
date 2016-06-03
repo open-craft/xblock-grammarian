@@ -1,0 +1,32 @@
+.grammarian-text {
+    font-size: 120%;
+    background-color: #eee;
+    max-width: 800px;
+    padding: 0.3em;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+a.grammarian-part {
+    color: #0B344A; /* "x-dark" color from edX pattern library */
+    text-decoration: none;
+    padding: 1px;
+}
+.grammarian-text.selection-made a.grammarian-part {
+    color: black;
+}
+a.grammarian-part.selected.correct, a.grammarian-part.correct {
+    background-color: rgba(37, 184, 90, 0.498039); /* "success trans" color from edX pattern library */
+    border-bottom: 3px solid black;
+}
+
+a.grammarian-part.selected.incorrect {
+    background-color: rgba(178, 6, 16, 0.498039); /* "error trans" color from edX pattern library */
+    text-decoration: line-through;
+}
+.grammarian-text.selection-required a.grammarian-part {
+    cursor: pointer;
+}
+.grammarian-text.selection-required a.grammarian-part:hover, a.grammarian-part.selected {
+    background-color: rgba(253, 188, 86, 0.498039); /* "warning trans" color from edX pattern library */
+    border-bottom: 3px solid black;
+}
