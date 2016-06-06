@@ -163,3 +163,12 @@ class GrammarianXBlock(XBlock):
     ############################################################################################
     # Misc
     ############################################################################################
+
+    @staticmethod
+    def workbench_scenarios():
+        """
+        An XML scenario for display in the XBlock SDK workbench.
+        """
+        return [
+            ("Grammarian default scenario", "<grammarian/>"),
+        ]
