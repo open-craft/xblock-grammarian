@@ -3,10 +3,16 @@ function GrammarianXBlock(runtime, element, initialState) {
 
     const $element = $(element);
     element = $element[0]; // <- Works around a Studio bug in Dogwood: https://github.com/edx/edx-platform/pull/11433
+    const usageId = $element.data("usage-id") || $element.data("usage"); // usage-id in LMS/Studio, usage in workbench
+    // Create a global variable to save the state so sequential doesn't wipe out local changes:
+    window.grammarianState = window.grammarianState || {};
+    // initialState may have been cached by the parent sequential block; check if newer state is available:
+    initialState = window.grammarianState[usageId] || initialState;
+    var state;
+
     const $textBox = $element.find('.grammarian-text');
     const $parts = $textBox.find(".grammarian-part");
 
-    var state = initialState;
     init();
 
     /**
@@ -14,7 +20,7 @@ function GrammarianXBlock(runtime, element, initialState) {
      */
     function init() {
         console.log("Initializing GrammarianXBlock");
-        applyState();
+        applyState(initialState);
 
         // set up event handlers:
         $element.on("click", ".selection-required .grammarian-part", handlePartClicked);
@@ -23,7 +29,8 @@ function GrammarianXBlock(runtime, element, initialState) {
     /**
      * Update the DOM to reflect 'state'.
      */
-    function applyState() {
+    function applyState(newState) {
+        window.grammarianState[usageId] = state = newState;
         const selectionAlreadyMade = (state.selected_part_index !== null);
         $textBox.toggleClass("selection-made", selectionAlreadyMade);
         $textBox.toggleClass("selection-required", !selectionAlreadyMade);
@@ -60,8 +67,8 @@ function GrammarianXBlock(runtime, element, initialState) {
         const data = {part_index: partIndex};
 
         $.post(url, JSON.stringify(data), 'json').done(function(responseData) {
-            state = responseData;
-            applyState();
+            // Upon successful submission of this selection, the updated state is returned:
+            applyState(responseData);
         });
     }
 }
