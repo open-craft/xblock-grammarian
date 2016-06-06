@@ -10,6 +10,7 @@ from __future__ import unicode_literals
 import jinja2
 from xblock import fields
 from xblock.core import XBlock
+from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope
 from xblock.fragment import Fragment
 
@@ -153,7 +154,11 @@ class GrammarianXBlock(XBlock):
         """
         Get the state of this XBlock - i.e. all the user-specific data
         """
+        if self.student_has_answered:
+            raise JsonHandlerError(400, "This student already answered.")
         part_index = data.get("part_index")
+        if part_index not in range(0, len(self.text_parts)):
+            raise JsonHandlerError(400, "Invalid part_index.")
 
         # Save the student's selection:
         self.part_selected = part_index
