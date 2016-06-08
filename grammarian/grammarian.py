@@ -13,6 +13,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope
 from xblock.fragment import Fragment
+from xblock.validation import ValidationMessage
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .utils import split_sentence_into_parts
@@ -122,6 +123,14 @@ class GrammarianXBlock(XBlock, StudioEditableXBlockMixin):
         if self.student_has_answered:
             state["wrong_part_index"] = self.wrong_part_index
         return state
+
+    def validate(self):
+        """
+        Validate the configuration of this XBlock.
+        """
+        validation = super(GrammarianXBlock, self).validate()
+        validation.add(ValidationMessage(ValidationMessage.ERROR, u"Example error."))
+        return validation
 
     ############################################################################################
     # Views
