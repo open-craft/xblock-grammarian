@@ -13,6 +13,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope
 from xblock.fragment import Fragment
+from xblock.validation import ValidationMessage
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .utils import split_sentence_into_parts
@@ -122,6 +123,26 @@ class GrammarianXBlock(StudioEditableXBlockMixin, XBlock):
         if self.student_has_answered:
             state["wrong_part_index"] = self.wrong_part_index
         return state
+
+    def validate_field_data(self, validation, data):
+        """
+        Validate this block's field data. Instead of checking fields like self.name, check the
+        fields set on data, e.g. data.name. This allows the same validation method to be re-used
+        for the studio editor. Any errors found should be added to "validation".
+
+        This method should not return any value or raise any exceptions.
+        All of this XBlock's fields will be found in "data", even if they aren't being changed
+        or aren't even set (i.e. are defaults).
+        """
+        super(GrammarianXBlock, self).validate_field_data(validation, data)
+
+        def add_error(msg):
+            validation.add(ValidationMessage(ValidationMessage.ERROR, msg))
+
+        unused_parts, wrong_index = split_sentence_into_parts(data.text)
+
+        if wrong_index is None:
+            add_error("You must indicate part of the text that is wrong by surrounding it with [square brackets].")
 
     ############################################################################################
     # Views
