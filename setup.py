@@ -29,6 +29,7 @@ setup(
     install_requires=[
         'Jinja2',
         'XBlock',
+        'xblock-utils',
     ],
     entry_points={
         'xblock.v1': 'grammarian = grammarian:GrammarianXBlock',
