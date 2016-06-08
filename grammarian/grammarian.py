@@ -13,7 +13,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope
 from xblock.fragment import Fragment
-from xblock.validation import ValidationMessage
+from xmodule.validation import StudioValidationMessage, StudioValidation
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .utils import split_sentence_into_parts
@@ -129,7 +129,20 @@ class GrammarianXBlock(XBlock, StudioEditableXBlockMixin):
         Validate the configuration of this XBlock.
         """
         validation = super(GrammarianXBlock, self).validate()
-        validation.add(ValidationMessage(ValidationMessage.ERROR, u"Example error."))
+        if not isinstance(validation, StudioValidation):
+            validation = StudioValidation.copy(validation)
+
+        validation.set_summary(
+            StudioValidationMessage(
+                StudioValidationMessage.NOT_CONFIGURED,
+                _("That required field has not yet been filled out."),
+                action_class='edit-button',
+                action_label=_("Specify value now.")
+            )
+        )
+        validation.add(
+            StudioValidationMessage(StudioValidationMessage.ERROR, u"Another example error.")
+        )
         return validation
 
     ############################################################################################
