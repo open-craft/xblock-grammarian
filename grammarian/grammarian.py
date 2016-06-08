@@ -148,6 +148,7 @@ class GrammarianXBlock(StudioEditableXBlockMixin, XBlock):
     # Views
     ############################################################################################
 
+    @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
         The main view of this XBlock.

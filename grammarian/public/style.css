@@ -30,3 +30,16 @@ a.grammarian-part.selected.incorrect {
     background-color: rgba(253, 188, 86, 0.498039); /* "warning trans" color from edX pattern library */
     border-bottom: 3px solid black;
 }
+
+@media (max-width: 500px) {
+    .grammarian-text .grammarian-part {
+        padding: 0.6em;
+        margin: 0.1em;
+        line-height: 1.2em;
+        border: 1px solid #aaa;
+        display: inline-block;
+    }
+    .grammarian-text .grammarian-part::before, .grammarian-text .grammarian-part::after {
+        content: '\00a0';
+    }
+}
