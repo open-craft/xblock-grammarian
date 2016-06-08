@@ -13,6 +13,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope
 from xblock.fragment import Fragment
+from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .utils import split_sentence_into_parts
 
@@ -25,7 +26,7 @@ def _(text):
     return text
 
 
-class GrammarianXBlock(XBlock):
+class GrammarianXBlock(XBlock, StudioEditableXBlockMixin):
     """
     Implements the Grammarian XBlock
     """
@@ -78,6 +79,7 @@ class GrammarianXBlock(XBlock):
     ############################################################################################
 
     has_score = True
+    editable_fields = ('display_name', 'instructions', 'text')
 
     ############################################################################################
     # Helpful properties and methods
