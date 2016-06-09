@@ -34,5 +34,5 @@ setup(
     entry_points={
         'xblock.v1': 'grammarian = grammarian:GrammarianXBlock',
     },
-    package_data=package_data("grammarian", ["templates", "public"]),
+    package_data=package_data("grammarian", ["templates", "public", "translations"]),
 )

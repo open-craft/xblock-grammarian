@@ -27,6 +27,7 @@ def _(text):
     return text
 
 
+@XBlock.needs('i18n')
 class GrammarianXBlock(StudioEditableXBlockMixin, XBlock):
     """
     Implements the Grammarian XBlock
@@ -142,7 +143,13 @@ class GrammarianXBlock(StudioEditableXBlockMixin, XBlock):
         unused_parts, wrong_index = split_sentence_into_parts(data.text)
 
         if wrong_index is None:
-            add_error("You must indicate part of the text that is wrong by surrounding it with [square brackets].")
+            add_error(
+                self._("You must indicate part of the text that is wrong by surrounding it with [square brackets].")
+            )
+
+    def _(self, text):
+        """ Shortcut for ugettext """
+        return self.ugettext(text)
 
     ############################################################################################
     # Views

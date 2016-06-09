@@ -1,6 +1,9 @@
 function GrammarianXBlock(runtime, element, initialState) {
     "use strict";
 
+    // Set up a mock for gettext if it isn't available in the client runtime:
+    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
+
     const $element = $(element);
     element = $element[0]; // <- Works around a Studio bug in Dogwood: https://github.com/edx/edx-platform/pull/11433
     const usageId = $element.data("usage-id") || $element.data("usage"); // usage-id in LMS/Studio, usage in workbench
